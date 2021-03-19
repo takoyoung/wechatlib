@@ -1,0 +1,3 @@
+include ':app:wechatlibrary'
+include ':app'
+rootProject.name = "wechatlib"
