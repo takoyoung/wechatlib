@@ -105,6 +105,7 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
             return;
         }
 
+        log("start "+eveName);
         if(eveName.equals("Login")){
             Login(callbackId, args);
         }else if(eveName.equals("Pay")){
@@ -139,6 +140,7 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
         req.scope = "snsapi_userinfo";
         req.state = String.valueOf(getCallbackId());
         wxapi.sendReq(req);
+        log("open wechat client");
     }
 
     private void Pay(int callbackId, Map<String,Object> args){
