@@ -76,6 +76,7 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
                         retAgv.put("code", auth_resp.code);
                         m_bLogin = false;
                     }
+                    retAgv.put("bundleid", mActivity.getPackageName());
                     ThirdPartyCallback.getInstance().callSuccess(retAgv);
                     break;
                 case BaseResp.ErrCode.ERR_COMM:
