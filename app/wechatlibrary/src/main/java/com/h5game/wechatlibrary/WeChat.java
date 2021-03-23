@@ -34,7 +34,7 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
     private IWXAPI wxapi;
     private boolean m_bLogin = false;
 
-    public WeChat(Context context, String appID, Activity activity){
+    public WeChat(Context context, Activity activity, String appID){
         wxapi = WXAPIFactory.createWXAPI(context, appID, true);
         wxapi.registerApp(appID);
         mActivity = activity;
