@@ -2,4 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.h5game.wechatlibrary">
 
+    <application>
+        <activity
+            android:name="${applicationId}.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:taskAffinity="${applicationId}"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" />
+
+        <activity
+            android:name="${applicationId}.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
+    </application>
 </manifest>
