@@ -34,7 +34,8 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
     private IWXAPI wxapi;
     private boolean m_bLogin = false;
 
-    public WeChat(Context context, Activity activity, String appID){
+    public WeChat(Context context, Activity activity, String appID, String className){
+        super(className);
         wxapi = WXAPIFactory.createWXAPI(context, appID, true);
         wxapi.registerApp(appID);
         mActivity = activity;
@@ -46,10 +47,6 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
             }
         }, new IntentFilter(ConstantsAPI.ACTION_REFRESH_WXAPP));
 
-    }
-
-    private void log(String msg){
-        Log.d("H5Game", msg);
     }
 
     public void handleIntent(Intent intent) {
@@ -77,19 +74,19 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
                         m_bLogin = false;
                     }
                     retAgv.put("bundleid", mActivity.getPackageName());
-                    ThirdPartyCallback.getInstance().callSuccess(retAgv);
+                    callSuccess(retAgv);
                     break;
                 case BaseResp.ErrCode.ERR_COMM:
-                    ThirdPartyCallback.getInstance().callErr(-1, 3, "操作发生异常！");
+                    callErr(-1, 3, "操作发生异常！");
                     break;
                 case BaseResp.ErrCode.ERR_USER_CANCEL:
-                    ThirdPartyCallback.getInstance().callErr(-1, 4, "用户取消操作！");
+                    callErr(-1, 4, "用户取消操作！");
                     break;
                 case BaseResp.ErrCode.ERR_AUTH_DENIED:
-                    ThirdPartyCallback.getInstance().callErr(-1, 5, "用户拒绝授权！");
+                    callErr(-1, 5, "用户拒绝授权！");
                     break;
                 default:
-                    ThirdPartyCallback.getInstance().callErr(-1, 6, resp.errStr);
+                    callErr(-1, 6, resp.errStr);
                     break;
             }
         }
@@ -98,11 +95,11 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
     public void onWeChatEvent(String eveName, int callbackId, Map<String,Object> args){
         if(!wxapi.isWXAppInstalled())
         {
-            ThirdPartyCallback.getInstance().callErr(callbackId, 2, "请先安装微信！");
+            callErr(callbackId, 2, "请先安装微信！");
             return;
         }
 
-        if(!ThirdPartyCallback.getInstance().checkCallbackId(callbackId)){
+        if(!checkCallbackId(callbackId)){
             return;
         }
 
@@ -149,7 +146,7 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
         payJson = (Map)args.get("pay");
 
         if(payJson == null){
-            ThirdPartyCallback.getInstance().callErr(-1, 7, "参数不全！");
+            callErr(-1, 7, "参数不全！");
             return;
         }
 
@@ -168,7 +165,7 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
         String type = (String)args.get("type");
 
         if(type == null){
-            ThirdPartyCallback.getInstance().callErr(-1, 7, "参数不全！");
+            callErr(-1, 7, "参数不全！");
             return;
         }
 
@@ -213,14 +210,14 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
 
         if(url==null || title==null || desc==null || img==null )
         {
-            ThirdPartyCallback.getInstance().callErr(-1, 7, "参数不全！");
+            callErr(-1, 7, "参数不全！");
             return;
         }
 
         Bitmap thumb = BitmapFactory.decodeResource(mActivity.getResources(), mActivity.getResources().getIdentifier("ic_launcher", "mipmap", mActivity.getPackageName()));
         if(thumb==null)
         {
-            ThirdPartyCallback.getInstance().callErr(-1, 8, "缩略图不存在");
+            callErr(-1, 8, "缩略图不存在");
             return;
         }
 
@@ -247,7 +244,7 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
         Bitmap bitmap = null;
         if(base64Data==null)
         {
-            ThirdPartyCallback.getInstance().callErr(-1, 7, "参数不全！");
+            callErr(-1, 7, "参数不全！");
             return;
         }
 
@@ -257,7 +254,7 @@ public class WeChat extends ThirdPartyCallback implements IWXAPIEventHandler {
         }
 
         if(bitmap==null) {
-            ThirdPartyCallback.getInstance().callErr(-1, 8, "缩略图不存在");
+            callErr(-1, 8, "缩略图不存在");
             return;
         }
 
